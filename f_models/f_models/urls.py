@@ -6,5 +6,6 @@ urlpatterns = patterns('',
     # url(r'^$', 'f_models.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^admin_tools/', include('admin_tools.urls')),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
