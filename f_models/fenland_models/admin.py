@@ -18,8 +18,36 @@ class AppointmentInline(admin.TabularInline):
     fields = ('appt_date', 'appt_time', 'test_site')
     extra = 0
 
+class VolunteerInline(admin.TabularInline):
+    model = Volunteer
+    fields = ('town', 'postcode', 'calculate_age')
+    readonly_fields = ('surname', 'forenames', 'town', 'postcode',
+                       'calculate_age')
+    can_delete = False
+    extra = 0
+
+    def has_add_permission(self, request):
+        return False
+
 class SurgeryAdmin(admin.ModelAdmin):
-    pass
+    inlines = [VolunteerInline, ]
+    readonly_fields = ('modified', 'modified_by')
+    fieldsets = (
+        (None, {'fields': (('full_name', 'admin_contact_name'),
+                           ('name', 'admin_contact_number'),
+                           ('addr1', 'hscic_code'),
+                           ('addr2', 'area'),
+                           ('town',),
+                           ('county'),
+                           ('postcode'),
+                           ('telephone'))}),
+        ('Modified', {'fields': (('modified_by', 'modified',  'latitude', 'longitude'))})
+    )
+
+    def save_model(self, request, obj, form, change):
+        obj.modified_by = request.user.get_username()
+        obj.modified = str(arrow.now()).replace('+01:00', '')
+        obj.save()
 
 admin.site.register(Surgery, SurgeryAdmin)
 
