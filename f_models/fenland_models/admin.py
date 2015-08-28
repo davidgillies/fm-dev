@@ -1,7 +1,14 @@
 from django.contrib import admin
 from fenland_models.models import Surgery, Volunteer, Status, Appointment, AuditLog
 import arrow
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
+
+class VolunteerResource(resources.ModelResource):
+
+    class Meta:
+        model = Volunteer
 
 class AppointmentInline(admin.TabularInline):
     model = Appointment
@@ -14,8 +21,9 @@ class SurgeryAdmin(admin.ModelAdmin):
 admin.site.register(Surgery, SurgeryAdmin)
 
 
-class VolunteerAdmin(admin.ModelAdmin):
+class VolunteerAdmin(ImportExportModelAdmin):
     ## change list view
+    resource_class = VolunteerResource
     list_display = ('surname', 'forenames', 'town', 'postcode',)
     list_filter = ('town', 'surgeries__full_name')
     date_hierarchy = 'dob'
