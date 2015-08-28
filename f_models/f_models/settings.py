@@ -34,7 +34,7 @@ INSTALLED_APPS = (
     'admin_tools.theming',
     'admin_tools.menu',
     'admin_tools.dashboard',
-    'django.contrib.admin',
+    'django.contrib.admin.apps.SimpleAdminConfig', # for adminplus
     'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'fenland_models',
     'import_export',
+    'adminplus',
 )
 
 MIDDLEWARE_CLASSES = (
